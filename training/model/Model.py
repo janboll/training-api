@@ -1,4 +1,4 @@
-from training import db
+"""from training import db
 
 
 class Training(db.Model):
@@ -15,4 +15,10 @@ class Schedule(db.Model):
 
 class Week(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+"""
+from training import db
+
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(255))
 
