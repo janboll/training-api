@@ -12,22 +12,19 @@ def create_app():
     db.init_app(app)
     ma.init_app(app)
 
-    from training.model.Model import User
+    from training.model import Athlete, PersonalBest
 
-    class UserSchema(ma.ModelSchema):
+    class AthleteSchema(ma.Schema):
         class Meta:
-            model = User
+            model = Athlete
 
-    users_schema = UserSchema(many=True)
+    athletes_schema = AthleteSchema(many=True)
 
-    @app.route("/api/users/")
-    def users():
+    @app.route("/api/athletes/")
+    def athletes():
         db.create_all()
-        all_users = User.query.all()
-        a = users_schema.dump(all_users)
-        return users_schema.jsonify(a)
+        all_athletes = Athlete.query.all( )
+        a = athletes_schema.dump(all_athletes)
+        return athletes_schema.jsonify(a)
 
     return app
-
-
-

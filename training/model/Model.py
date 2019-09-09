@@ -1,5 +1,12 @@
 from training import db
 
+import enum
+
+
+class Gender(enum.Enum):
+    m = "male"
+    f = "female"
+
 
 class Training(db.Model):
     """
@@ -33,8 +40,15 @@ class TrainingPlan(db.Model):
 
 class Athlete(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    pbs = [] # dict of personal bests
-    age = []
-    gender = []
-    weight = []
+    age = db.Column(db.Integer, nullable=False)
+    gender = db.Column(db.Enum(Gender), nullable=False)
+    weight = db.Column(db.Float, nullable=False)
+    #personal_bests = db.relationship("PersonalBest", back_populates="athlete")
+
+
+class PersonalBest(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    distance_in_meter = db.Column(db.Integer, nullable=False)
+    time_in_seconds = db.Column(db.Integer, nullable=False)
+    athlete_id = db.Column(db.Integer, db.Foreign_Key("Athlete.id"), nullable=False)
 
