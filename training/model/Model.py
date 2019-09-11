@@ -38,6 +38,9 @@ class Athlete(db.Model):
     gender = db.Column(db.String, nullable=False)
     weight = db.Column(db.Float, nullable=False)
 
+    def __repr__(self):
+        return "".join([str(x) for x in self.personalbests])
+
 
 class PersonalBest(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -45,3 +48,6 @@ class PersonalBest(db.Model):
     time_in_seconds = db.Column(db.Integer, nullable=False)
     athlete_id = db.Column(db.Integer, db.ForeignKey("athlete.id"), nullable=False)
     athlete = db.relationship("Athlete", backref="personalbests")
+
+    def __repr__(self):
+        return "Distance: {}".format(self.distance_in_meter)

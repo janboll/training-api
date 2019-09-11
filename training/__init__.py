@@ -18,9 +18,20 @@ def create_app():
         class Meta:
             model = Athlete
 
+        personalbests = ma.List(ma.HyperlinkRelated("personal_best"))
+
+        _links = ma.Hyperlinks(
+            {"self": ma.URLFor("athletes", id="<id>")}
+        )
+
     class PersonalBestsSchema(ma.ModelSchema):
         class Meta:
             model = PersonalBest
+
+        # Smart hyperlinking
+        _links = ma.Hyperlinks(
+            {"self": ma.URLFor("personal_best", id="<id>")}
+        )
 
     athletes_schema = AthleteSchema(many=True)
     personalbestes_schema = PersonalBestsSchema(many=True)
@@ -28,12 +39,14 @@ def create_app():
     @app.route("/api/athletes/")
     def athletes():
         db.create_all()
-        all_pbs = PersonalBest.query.all()
-        p = personalbestes_schema.dump(all_pbs)
-        all_athletes = Athlete.query.all( )
+        all_athletes = Athlete.query.all()
+        print(all_athletes)
         a = athletes_schema.dump(all_athletes)
         print(a)
-        print(p)
         return athletes_schema.jsonify(a)
+
+    @app.route("/api/personal_best")
+    def personal_best():
+        pass
 
     return app
