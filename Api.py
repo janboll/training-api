@@ -9,3 +9,9 @@ A schedule can be influenced by the user by supplying sessions,  i.e. by an othe
 A schedule of trainings is based on a bigger training plan which is based on more weeks
 
 """
+
+import training
+
+app = training.create_app()
+
+app.run(debug=True)
