@@ -1,19 +1,19 @@
 from training.extensions import db
-from training.schema import athletes_schema
+from training.schema import AthleteSchema
 from training.model.Model import Athlete, PersonalBest
 
 from flask import Blueprint
 
-blue_print = Blueprint("basic", __name__)
+bp_athlete = Blueprint("athlete", __name__)
 
 
-@blue_print.route("/api/athlete/")
+@bp_athlete.route("/api/athlete/")
 def athlete():
     db.create_all()
     all_athletes = Athlete.query.all()
-    return athletes_schema.jsonify(all_athletes)
+    return AthleteSchema().jsonify(all_athletes)
 
 
-@blue_print.route("/api/personalbest/")
+@bp_athlete.route("/api/personalbest/")
 def personalbest():
     pass

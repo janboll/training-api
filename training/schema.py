@@ -1,4 +1,4 @@
-from training.model import Athlete, PersonalBest
+from training.model import *
 from training.extensions import ma
 
 
@@ -6,21 +6,31 @@ class AthleteSchema(ma.ModelSchema):
     class Meta:
         model = Athlete
 
-    personalbest = ma.List(ma.HyperlinkRelated("basic.personalbest"))
-
-    _links = ma.Hyperlinks(
-        {"self": ma.URLFor("basic.athlete", id="<id>")}
-    )
+    personalbest = ma.List(ma.HyperlinkRelated("athlete.personalbest"))
 
 
 class PersonalBestsSchema(ma.ModelSchema):
     class Meta:
         model = PersonalBest
 
-    # Smart hyperlinking
-    _links = ma.Hyperlinks(
-        {"self": ma.URLFor("basic.personalbest", id="<id>")}
-    )
 
-athletes_schema = AthleteSchema(many=True)
-personalbestes_schema = PersonalBestsSchema(many=True)
+class TrainingTypeSchema(ma.ModelSchema):
+    class Meta:
+        model = TrainingType
+
+
+class TrainingSchema(ma.ModelSchema):
+    class Meta:
+        model = Training
+
+    traininglap = ma.List(ma.HyperlinkRelated("training.traininglap"))
+
+
+class TempoSchema(ma.ModelSchema):
+    class Meta:
+        model = Tempo
+
+
+class TrainingLapSchema(ma.ModelSchema):
+    class Meta:
+        model = TrainigLap

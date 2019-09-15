@@ -8,8 +8,10 @@ def create_app():
     db.init_app(app)
     ma.init_app(app)
 
-    from training.views import blue_print
+    from training.views.athlete import bp_athlete
+    from training.views.training import bp_training
 
-    app.register_blueprint(blue_print)
+    app.register_blueprint(bp_athlete)
+    app.register_blueprint(bp_training)
 
     return app
