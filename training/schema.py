@@ -33,4 +33,4 @@ class TempoSchema(ma.ModelSchema):
 
 class TrainingLapSchema(ma.ModelSchema):
     class Meta:
-        model = TrainigLap
+        model = TrainingLap

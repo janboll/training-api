@@ -38,7 +38,7 @@ class Tempo(db.Model):
     name = db.Column(db.String, nullable=False)
 
 
-class TrainigLap(db.Model):
+class TrainingLap(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     training_id = db.Column(db.Integer, db.ForeignKey("training.id"), nullable=False)
     lap = db.Column(db.Integer, nullable=False)
