@@ -14,4 +14,7 @@ def create_app():
     app.register_blueprint(bp_athlete)
     app.register_blueprint(bp_training)
 
+    with app.app_context():
+        db.create_all()
+
     return app
