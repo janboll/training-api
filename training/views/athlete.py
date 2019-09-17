@@ -1,7 +1,7 @@
 from training.schema import AthleteSchema, PersonalBestSchema
 from training.model.Model import Athlete, PersonalBest
 from .response import _error_not_found
-from .util import _entity_default_endpoint, _entity_specific_endpoint
+from .generic import _entity_default_endpoint, _entity_specific_endpoint
 
 from flask import Blueprint, request
 

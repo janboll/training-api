@@ -1,6 +1,6 @@
 from training.schema import TrainingSchema, TrainingLapSchema, TrainingTypeSchema, TempoSchema
 from training.model.Model import Training, TrainingLap, TrainingType, Tempo
-from .util import _entity_default_endpoint, _entity_specific_endpoint
+from .generic import _entity_default_endpoint, _entity_specific_endpoint
 
 from flask import Blueprint, request
 

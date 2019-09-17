@@ -54,7 +54,7 @@ class Training(db.Model):
             sum(tempo.vdot_percent)
     """
     id = db.Column(db.Integer, primary_key=True)
-    #training_type_id = db.Column(db.Integer, db.ForeignKey("trainingtype.id"), nullable=False)
+    training_type_id = db.Column(db.Integer, db.ForeignKey("trainingtype.id"), nullable=False)
 
 
 class Athlete(db.Model):
