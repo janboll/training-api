@@ -6,10 +6,10 @@ class AthleteSchema(ma.ModelSchema):
     class Meta:
         model = Athlete
 
-    personalbest = ma.List(ma.HyperlinkRelated("athlete.personalbest"))
+    personalbest = ma.List(ma.HyperlinkRelated("athlete.specific_personalbest"))
 
 
-class PersonalBestsSchema(ma.ModelSchema):
+class PersonalBestSchema(ma.ModelSchema):
     class Meta:
         model = PersonalBest
 
