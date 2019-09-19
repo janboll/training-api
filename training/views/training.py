@@ -1,4 +1,9 @@
-from training.schema import TrainingSchema, TrainingLapSchema, TrainingTypeSchema, TempoSchema
+from training.schema import (
+    TrainingSchema,
+    TrainingLapSchema,
+    TrainingTypeSchema,
+    TempoSchema,
+)
 from training.model.Model import Training, TrainingLap, TrainingType, Tempo
 from .generic import _entity_default_endpoint, _entity_specific_endpoint
 
@@ -45,4 +50,3 @@ def trainingtype():
 @bp_training.route("/api/trainingtype/<int:id>", methods=["GET"])
 def specific_trainingtype(id):
     return _entity_specific_endpoint(TrainingType, TrainingTypeSchema, id)
-

@@ -11,6 +11,7 @@ class AthleteSchema(ma.ModelSchema):
 
 class PersonalBestSchema(ma.ModelSchema):
     class Meta:
+        include_fk = True
         model = PersonalBest
 
 
@@ -21,9 +22,10 @@ class TrainingTypeSchema(ma.ModelSchema):
 
 class TrainingSchema(ma.ModelSchema):
     class Meta:
+        include_fk = True
         model = Training
 
-    traininglap = ma.List(ma.HyperlinkRelated("training.traininglap"))
+    traininglap = ma.List(ma.HyperlinkRelated("training.specific_traininglap"))
 
 
 class TempoSchema(ma.ModelSchema):
@@ -33,4 +35,5 @@ class TempoSchema(ma.ModelSchema):
 
 class TrainingLapSchema(ma.ModelSchema):
     class Meta:
+        include_fk = True
         model = TrainingLap
