@@ -12,11 +12,12 @@ from flask_marshmallow import exceptions
 
 
 class ApiGeneric(MethodView):
-    def __init__(self, schema, model):
+    def __init__(self, schema, model, allowed_query_params=[]):
         super().__init__()
         self.model = model
         self.schema_many = schema(many=True)
         self.schema_single = schema()
+        self.allowed_query_params = allowed_query_params
 
     def _get_all_or_by_id(self, id):
         if id is None:
@@ -38,8 +39,19 @@ class ApiGeneric(MethodView):
         db.session.commit()
         return _notif_item_created(self.model.__name__)
 
+    def _get_set_query_param(self):
+        # TODO: Handle if more then one query attribute is provided
+        for param in self.allowed_query_params:
+            val = request.args.get(param)
+            if val is not None:
+                return param, val
+
     def get(self, id):
-        return self._get_all_or_by_id(id)
+        param = self._get_set_query_param()
+        if param is None:
+            return self._get_all_or_by_id(id)
+        item = self.model.query.filter(getattr(self.model, param[0]) == param[1]).all()
+        return self.schema_many.jsonify(item)
 
     def post(self):
         return self._post_single_item()

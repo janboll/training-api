@@ -7,7 +7,7 @@ from training.schema import (
 from training.model.Model import Training, TrainingLap, TrainingType, Tempo
 from training.views.generic import ApiGeneric, register_api
 
-from flask import Blueprint
+from flask import Blueprint, request
 
 bp_training = Blueprint("training", __name__)
 
@@ -19,7 +19,7 @@ class ApiTraining(ApiGeneric):
 
 class ApiTrainingLap(ApiGeneric):
     def __init__(self):
-        super().__init__(TrainingLapSchema, TrainingLap)
+        super().__init__(TrainingLapSchema, TrainingLap, allowed_query_params=["training_id"])
 
 
 class ApiTrainingType(ApiGeneric):

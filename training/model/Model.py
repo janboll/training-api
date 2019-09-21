@@ -41,6 +41,7 @@ class Tempo(db.Model):
 
 
 class TrainingLap(db.Model):
+    # TODO: PK should be compound of training_id, lap
     __tablename__ = "training_lap"
     id = db.Column(db.Integer, primary_key=True)
     training_id = db.Column(db.Integer, db.ForeignKey("training.id"), nullable=False)
