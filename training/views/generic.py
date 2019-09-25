@@ -2,7 +2,7 @@ from training.extensions import db
 from .response import (
     _error_validation,
     _error_not_found,
-    _error_not_allowed,
+_error_not_found_by_attributes,
     _notif_item_created,
 )
 
@@ -51,7 +51,10 @@ class ApiGeneric(MethodView):
         items = func(**query_tuple[0])
         if isinstance(items, list):
             return self.schema_many.jsonify(items)
-        return self.schema_single.jsonify(items)
+        elif items is not None:
+            return self.schema_single.jsonify(items)
+        return _error_not_found_by_attributes(self.model.__name__, query_tuple[0])
+
 
     def get(self, id):
         param_dict = self._get_by_query()
