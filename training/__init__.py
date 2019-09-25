@@ -12,9 +12,11 @@ def create_app():
 
     from training.views.athlete import bp_athlete
     from training.views.training import bp_training
+    from training.views.jdformula import bp_jdformula
 
     app.register_blueprint(bp_athlete)
     app.register_blueprint(bp_training)
+    app.register_blueprint(bp_jdformula)
 
     with app.app_context():
         db.create_all()

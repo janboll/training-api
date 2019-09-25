@@ -49,7 +49,9 @@ class ApiGeneric(MethodView):
         func = query_tuple[1]
         # Todo: can raise type error...
         items = func(**query_tuple[0])
-        return self.schema_many.jsonify(items)
+        if isinstance(items, list):
+            return self.schema_many.jsonify(items)
+        return self.schema_single.jsonify(items)
 
     def get(self, id):
         param_dict = self._get_by_query()

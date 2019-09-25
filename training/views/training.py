@@ -25,7 +25,7 @@ class ApiTrainingLap(ApiGeneric):
     def __init__(self):
         super().__init__(
             TrainingLapSchema, TrainingLap, query_mappings=[{
-                "params": ["training_id", "foo"],
+                "params": ["training_id"],
                 "query_func": self._by_training_id
             }]
         )
