@@ -1,48 +1,47 @@
-from training.schema import TrainingSchema, TrainingLapSchema, TrainingTypeSchema, TempoSchema
+from training.schema import (
+    TrainingSchema,
+    TrainingLapSchema,
+    TrainingTypeSchema,
+    TempoSchema,
+)
 from training.model.Model import Training, TrainingLap, TrainingType, Tempo
-from .generic import _entity_default_endpoint, _entity_specific_endpoint
+from training.views.generic import ApiGeneric, register_api
 
 from flask import Blueprint, request
 
 bp_training = Blueprint("training", __name__)
 
 
-@bp_training.route("/api/tempo", methods=["GET", "POST"])
-def tempo():
-    return _entity_default_endpoint(Tempo, TempoSchema, request)
+class ApiTraining(ApiGeneric):
+    def __init__(self):
+        super().__init__(TrainingSchema, Training)
 
 
-@bp_training.route("/api/tempo/<int:id>", methods=["GET"])
-def specific_tempo(id):
-    return _entity_specific_endpoint(Tempo, TempoSchema, id)
+class ApiTrainingLap(ApiGeneric):
+
+    def _by_training_id(self, training_id=None):
+        return self.model.query.filter(self.model.training_id == training_id).all()
+
+    def __init__(self):
+        super().__init__(
+            TrainingLapSchema, TrainingLap, query_mappings=[{
+                "params": ["training_id"],
+                "query_func": self._by_training_id
+            }]
+        )
 
 
-@bp_training.route("/api/training", methods=["GET", "POST"])
-def training():
-    return _entity_default_endpoint(Training, TrainingSchema, request)
+class ApiTrainingType(ApiGeneric):
+    def __init__(self):
+        super().__init__(TrainingTypeSchema, TrainingType)
 
 
-@bp_training.route("/api/training/<int:id>", methods=["GET"])
-def specific_training(id):
-    return _entity_specific_endpoint(Training, TrainingSchema, id)
+class ApiTempo(ApiGeneric):
+    def __init__(self):
+        super().__init__(TempoSchema, Tempo)
 
 
-@bp_training.route("/api/traininglap", methods=["GET", "POST"])
-def traininglap():
-    return _entity_default_endpoint(TrainingLap, TrainingLapSchema, request)
-
-
-@bp_training.route("/api/traininglap/<int:id>", methods=["GET"])
-def specific_traininglap(id):
-    return _entity_specific_endpoint(TrainingLap, TrainingLapSchema, id)
-
-
-@bp_training.route("/api/trainingtype", methods=["GET", "POST"])
-def trainingtype():
-    return _entity_default_endpoint(TrainingType, TrainingTypeSchema, request)
-
-
-@bp_training.route("/api/trainingtype/<int:id>", methods=["GET"])
-def specific_trainingtype(id):
-    return _entity_specific_endpoint(TrainingType, TrainingTypeSchema, id)
-
+register_api(bp_training, ApiTraining, "/api/training")
+register_api(bp_training, ApiTrainingLap, "/api/traininglap")
+register_api(bp_training, ApiTrainingType, "/api/trainingtype")
+register_api(bp_training, ApiTempo, "/api/tempo")

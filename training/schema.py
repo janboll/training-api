@@ -6,11 +6,12 @@ class AthleteSchema(ma.ModelSchema):
     class Meta:
         model = Athlete
 
-    personalbest = ma.List(ma.HyperlinkRelated("athlete.specific_personalbest"))
+    personalbest = ma.List(ma.HyperlinkRelated("athlete./api/personalbest"))
 
 
 class PersonalBestSchema(ma.ModelSchema):
     class Meta:
+        include_fk = True
         model = PersonalBest
 
 
@@ -21,9 +22,10 @@ class TrainingTypeSchema(ma.ModelSchema):
 
 class TrainingSchema(ma.ModelSchema):
     class Meta:
+        include_fk = True
         model = Training
 
-    traininglap = ma.List(ma.HyperlinkRelated("training.traininglap"))
+    traininglap = ma.List(ma.HyperlinkRelated("training./api/traininglap"))
 
 
 class TempoSchema(ma.ModelSchema):
@@ -33,4 +35,10 @@ class TempoSchema(ma.ModelSchema):
 
 class TrainingLapSchema(ma.ModelSchema):
     class Meta:
+        include_fk = True
         model = TrainingLap
+
+
+class VdotSchema(ma.ModelSchema):
+    class Meta:
+        model = Vdot
