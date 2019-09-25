@@ -18,8 +18,17 @@ class ApiTraining(ApiGeneric):
 
 
 class ApiTrainingLap(ApiGeneric):
+
+    def _by_training_id(self, training_id=None):
+        return self.model.query.filter(self.model.training_id == training_id).all()
+
     def __init__(self):
-        super().__init__(TrainingLapSchema, TrainingLap, allowed_query_params=["training_id"])
+        super().__init__(
+            TrainingLapSchema, TrainingLap, query_mappings=[{
+                "params": ["training_id", "foo"],
+                "query_func": self._by_training_id
+            }]
+        )
 
 
 class ApiTrainingType(ApiGeneric):

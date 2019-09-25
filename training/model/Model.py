@@ -21,6 +21,14 @@ class TrainingPlan(db.Model):
 """
 
 
+class Vdot(db.Model):
+    __tablename__ = "vdot_values"
+    id = db.Column(db.Integer, primary_key=True)
+    vdot = db.Column(db.Float, nullable=False)
+    distance_in_meter = db.Column(db.Integer, nullable=False)
+    time_in_seconds = db.Column(db.Integer, nullable=False)
+
+
 class TrainingType(db.Model):
     __tablename__ = "training_type"
     id = db.Column(db.Integer, primary_key=True)
@@ -41,7 +49,7 @@ class Tempo(db.Model):
 
 
 class TrainingLap(db.Model):
-    # TODO: PK should be compound of training_id, lap
+    # TODO: PK should be composite of training_id, lap
     __tablename__ = "training_lap"
     id = db.Column(db.Integer, primary_key=True)
     training_id = db.Column(db.Integer, db.ForeignKey("training.id"), nullable=False)

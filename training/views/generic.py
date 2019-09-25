@@ -12,12 +12,12 @@ from flask_marshmallow import exceptions
 
 
 class ApiGeneric(MethodView):
-    def __init__(self, schema, model, allowed_query_params=[]):
+    def __init__(self, schema, model, query_mappings=[]):
         super().__init__()
         self.model = model
         self.schema_many = schema(many=True)
         self.schema_single = schema()
-        self.allowed_query_params = allowed_query_params
+        self.query_mappings = query_mappings
 
     def _get_all_or_by_id(self, id):
         if id is None:
@@ -39,19 +39,23 @@ class ApiGeneric(MethodView):
         db.session.commit()
         return _notif_item_created(self.model.__name__)
 
-    def _get_set_query_param(self):
-        # TODO: Handle if more then one query attribute is provided
-        for param in self.allowed_query_params:
-            val = request.args.get(param)
-            if val is not None:
-                return param, val
+    def _get_by_query(self):
+        for query in self.query_mappings:
+            param_dict = {key: request.args.get(key) for key in query["params"]}
+            if min([param_dict[key] is not None for key in param_dict]):
+                return param_dict, query["query_func"]
+
+    def _query_by_param(self, query_tuple):
+        func = query_tuple[1]
+        # Todo: can raise type error...
+        items = func(**query_tuple[0])
+        return self.schema_many.jsonify(items)
 
     def get(self, id):
-        param = self._get_set_query_param()
-        if param is None:
-            return self._get_all_or_by_id(id)
-        item = self.model.query.filter(getattr(self.model, param[0]) == param[1]).all()
-        return self.schema_many.jsonify(item)
+        param_dict = self._get_by_query()
+        if param_dict:
+            return self._query_by_param(param_dict)
+        return self._get_all_or_by_id(id)
 
     def post(self):
         return self._post_single_item()

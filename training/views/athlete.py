@@ -7,7 +7,9 @@ from flask import Blueprint
 
 class ApiPersonalBest(ApiGeneric):
     def __init__(self):
-        super().__init__(PersonalBestSchema, PersonalBest, allowed_query_params=["athlete_id"])
+        super().__init__(
+            PersonalBestSchema, PersonalBest, allowed_query_params=["athlete_id"]
+        )
 
 
 class ApiAthlete(ApiGeneric):

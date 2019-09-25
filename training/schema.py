@@ -37,3 +37,8 @@ class TrainingLapSchema(ma.ModelSchema):
     class Meta:
         include_fk = True
         model = TrainingLap
+
+
+class VdotSchema(ma.ModelSchema):
+    class Meta:
+        model = Vdot
