@@ -39,8 +39,9 @@ traininglaps = [
     {"training_id": 1, "lap": 1, "tempo": 1, "distance_in_meter": 10000}
 ]
 
-send_data("tempo", tempos)
-send_data("trainingtype", trainingtypes)
-send_data("training", trainings)
-send_data("traininglap", traininglaps)
+if __name__ == "__main__":
+    send_data("tempo", tempos)
+    send_data("trainingtype", trainingtypes)
+    send_data("training", trainings)
+    send_data("traininglap", traininglaps)
 

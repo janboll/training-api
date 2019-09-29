@@ -25,9 +25,7 @@ def _error_not_found_by_attributes(entitiy, param_dict):
     return (
         {
             "error": "Not found",
-            "error_message": "{} with params {} not found.".format(
-                entitiy, param_dict
-            ),
+            "error_message": "{} with params {} not found.".format(entitiy, param_dict),
         },
         404,
     )

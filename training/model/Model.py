@@ -79,6 +79,7 @@ class Athlete(db.Model):
     age = db.Column(db.Integer, nullable=False)
     gender = db.Column(db.String, nullable=False)
     weight = db.Column(db.Float, nullable=False)
+    vdot_value = db.Column(db.Integer, nullable=True)
 
 
 class PersonalBest(db.Model):

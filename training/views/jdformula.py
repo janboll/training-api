@@ -10,8 +10,15 @@ bp_jdformula = Blueprint("jdformula", __name__)
 
 
 class ApiVdot(ApiGeneric):
-    def _time_in_seconds_query(self, distance_in_meter=None, time_in_seconds=None):
-        return self.model.query.filter(self.model.distance_in_meter == distance_in_meter, self.model.time_in_seconds >= time_in_seconds).order_by(db.desc(self.model.vdot)).first()
+    def _vdot_from_time_and_distance(self, distance_in_meter=None, time_in_seconds=None):
+        return (
+            self.model.query.filter(
+                self.model.distance_in_meter == distance_in_meter,
+                self.model.time_in_seconds >= time_in_seconds,
+            )
+            .order_by(db.desc(self.model.vdot))
+            .first()
+        )
 
     def __init__(self):
         super().__init__(
@@ -20,7 +27,7 @@ class ApiVdot(ApiGeneric):
             query_mappings=[
                 {
                     "params": ["distance_in_meter", "time_in_seconds"],
-                    "query_func": self._time_in_seconds_query,
+                    "query_func": self._vdot_from_time_and_distance,
                 }
             ],
         )

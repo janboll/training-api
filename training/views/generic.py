@@ -2,7 +2,7 @@ from training.extensions import db
 from .response import (
     _error_validation,
     _error_not_found,
-_error_not_found_by_attributes,
+    _error_not_found_by_attributes,
     _notif_item_created,
 )
 
@@ -29,12 +29,15 @@ class ApiGeneric(MethodView):
                 return self.schema_single.jsonify(item)
             return _error_not_found(self.model.__name__, id)
 
-    def _post_single_item(self):
+    def _get_item_from_request(self):
         json_data = request.get_json()
         try:
             item = self.schema_single.load(json_data)
         except exceptions.ValidationError as e:
             return _error_validation(e)
+        return item
+
+    def _post_single_item(self, item):
         db.session.add(item)
         db.session.commit()
         return _notif_item_created(self.model.__name__)
@@ -55,7 +58,6 @@ class ApiGeneric(MethodView):
             return self.schema_single.jsonify(items)
         return _error_not_found_by_attributes(self.model.__name__, query_tuple[0])
 
-
     def get(self, id):
         param_dict = self._get_by_query()
         if param_dict:
@@ -63,7 +65,8 @@ class ApiGeneric(MethodView):
         return self._get_all_or_by_id(id)
 
     def post(self):
-        return self._post_single_item()
+        item = self._get_item_from_request()
+        return self._post_single_item(item)
 
 
 def register_api(blueprint, view, url, pk="id", pk_type="int"):
