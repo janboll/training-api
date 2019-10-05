@@ -29,6 +29,15 @@ class Vdot(db.Model):
     time_in_seconds = db.Column(db.Integer, nullable=False)
 
 
+class VdotTempo(db.Model):
+    __tablename__ = "vdot_tempo_values"
+    id = db.Column(db.Integer, primary_key=True)
+    tempo = db.Column(db.Integer, db.ForeignKey("tempo.id"), nullable=False)
+    vdot = db.Column(db.Float, nullable=False)
+    pace_in_seconds_per_km = db.Column(db.Integer, nullable=False)
+    distance_in_meter = db.Column(db.Integer, nullable=True)
+
+
 class TrainingType(db.Model):
     __tablename__ = "training_type"
     id = db.Column(db.Integer, primary_key=True)
@@ -43,9 +52,8 @@ class Tempo(db.Model):
     upper_percentage_hr = db.Column(db.Float, nullable=False)
     lower_percentage_max_vdot = db.Column(db.Float, nullable=False)
     upper_percentage_max_vdot = db.Column(db.Float, nullable=False)
-    lower_seconds_per_km = db.Column(db.Integer, nullable=False)
-    upper_seconds_per_km = db.Column(db.Integer, nullable=False)
     name = db.Column(db.String, nullable=False)
+    description = db.Column(db.String, nullable=True)
 
 
 class TrainingLap(db.Model):

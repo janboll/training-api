@@ -14,6 +14,9 @@ def update_athlete_vdot_from_pb(pb: PersonalBestSchema):
     )
 
     athlete = Athlete.query.get(pb.athlete_id)
+    # TODO: investigate on PB logic
+    # All PBs of an athlete should be taken into account when calculating the VDOT.
+    # i.e. use average of all PBs. Or perhaps use some expiration time on PBs.
     if athlete.vdot_value is None or athlete.vdot_value < vdot.vdot:
         athlete.vdot_value = vdot.vdot
         db.session.add(athlete)

@@ -42,3 +42,9 @@ class TrainingLapSchema(ma.ModelSchema):
 class VdotSchema(ma.ModelSchema):
     class Meta:
         model = Vdot
+
+
+class VdotTempoSchema(ma.ModelSchema):
+    class Meta:
+        include_fk = True
+        model = VdotTempo

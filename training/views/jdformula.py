@@ -1,5 +1,5 @@
-from training.schema import VdotSchema
-from training.model.Model import Vdot
+from training.schema import VdotSchema, VdotTempoSchema
+from training.model.Model import Vdot, VdotTempo
 from training.views.generic import ApiGeneric, register_api
 from training.extensions import db
 
@@ -34,5 +34,13 @@ class ApiVdot(ApiGeneric):
             ],
         )
 
+class ApiVdotTempo(ApiGeneric):
+    def __init__(self):
+        super().__init__(
+            VdotTempoSchema,
+            VdotTempo
+        )
+
 
 register_api(bp_jdformula, ApiVdot, "/api/vdot")
+register_api(bp_jdformula, ApiVdotTempo, "/api/vdot_tempo")
