@@ -1,10 +1,7 @@
 from training.extensions import db
-from .response import (
-    _error_validation,
-    _error_not_found,
-    _error_not_found_by_attributes,
-    _notif_item_created,
-)
+from .response import _notif_item_created
+
+from werkzeug.exceptions import NotFound, BadRequest
 
 from flask.views import MethodView
 from flask import request
@@ -27,14 +24,20 @@ class ApiGeneric(MethodView):
             item = self.model.query.get(id)
             if item:
                 return self.schema_single.jsonify(item)
-            return _error_not_found(self.model.__name__, id)
+            raise NotFound(
+                description="Item of entity  {} with id {} not found.".format(
+                    self.model.__name__, id
+                )
+            )
 
     def _get_item_from_request(self):
         json_data = request.get_json()
         try:
             item = self.schema_single.load(json_data)
         except exceptions.ValidationError as e:
-            return _error_validation(e)
+            raise BadRequest(
+                description=f"Failed to validate sent object. {e.messages}"
+            )
         return item
 
     def _post_single_item(self, item):
@@ -56,7 +59,11 @@ class ApiGeneric(MethodView):
             return self.schema_many.jsonify(items)
         elif items is not None:
             return self.schema_single.jsonify(items)
-        return _error_not_found_by_attributes(self.model.__name__, query_tuple[0])
+        raise NotFound(
+            description="{} with params {} not found.".format(
+                self.model.__name__, query_tuple[0]
+            )
+        )
 
     def get(self, id):
         param_dict = self._get_by_query()

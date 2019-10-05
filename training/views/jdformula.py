@@ -10,7 +10,9 @@ bp_jdformula = Blueprint("jdformula", __name__)
 
 
 class ApiVdot(ApiGeneric):
-    def _vdot_from_time_and_distance(self, distance_in_meter=None, time_in_seconds=None):
+    def _vdot_from_time_and_distance(
+        self, distance_in_meter=None, time_in_seconds=None
+    ):
         return (
             self.model.query.filter(
                 self.model.distance_in_meter == distance_in_meter,
