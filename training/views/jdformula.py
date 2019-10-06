@@ -34,11 +34,20 @@ class ApiVdot(ApiGeneric):
             ],
         )
 
+
 class ApiVdotTempo(ApiGeneric):
+    def _get_tempo_for_vdot(self, vdot=None, tempo=None):
+        return self.model.query.filter(
+            self.model.vdot == vdot, self.model.tempo == tempo
+        ).all()
+
     def __init__(self):
         super().__init__(
             VdotTempoSchema,
-            VdotTempo
+            VdotTempo,
+            query_mappings=[
+                {"params": ["vdot", "tempo"], "query_func": self._get_tempo_for_vdot}
+            ],
         )
 
 
