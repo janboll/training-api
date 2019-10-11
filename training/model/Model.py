@@ -1,25 +1,5 @@
 from training import db
 
-"""
-class Session(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    training = [Training] # reference to training
-    data = [] # Data retrieved from Garmin
-
-
-class Schedule(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    weeknumner = []
-    start_date = []
-    end_data = []
-    training = [] # list of trainings, None means off
-
-
-class TrainingPlan(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    trainings = []
-"""
-
 
 class Vdot(db.Model):
     __tablename__ = "vdot_values"
@@ -29,11 +9,13 @@ class Vdot(db.Model):
     time_in_seconds = db.Column(db.Integer, nullable=False)
 
 
-class TrainingType(db.Model):
-    __tablename__ = "training_type"
+class VdotTempo(db.Model):
+    __tablename__ = "vdot_tempo_values"
     id = db.Column(db.Integer, primary_key=True)
-    # "alternating", "increasing", "steady"
-    type_name = db.Column(db.String, nullable=False)
+    tempo = db.Column(db.Integer, db.ForeignKey("tempo.id"), nullable=False)
+    vdot = db.Column(db.Float, nullable=False)
+    pace_in_seconds_per_km = db.Column(db.Integer, nullable=False)
+    distance_in_meter = db.Column(db.Integer, nullable=True)
 
 
 class Tempo(db.Model):
@@ -43,9 +25,24 @@ class Tempo(db.Model):
     upper_percentage_hr = db.Column(db.Float, nullable=False)
     lower_percentage_max_vdot = db.Column(db.Float, nullable=False)
     upper_percentage_max_vdot = db.Column(db.Float, nullable=False)
-    lower_seconds_per_km = db.Column(db.Integer, nullable=False)
-    upper_seconds_per_km = db.Column(db.Integer, nullable=False)
     name = db.Column(db.String, nullable=False)
+    description = db.Column(db.String, nullable=True)
+
+
+class TrainingWeek(db.Model):
+    __tablename__ = "training_week"
+    id = db.Column(db.Integer, primary_key=True)
+    start_date = db.Column(db.Date, nullable=False)
+    athlete_id = db.Column(db.Integer, db.ForeignKey("athlete.id"), nullable=False)
+
+
+class TrainingWeekSchedule(db.Model):
+    __tablename__ = "training_week_schedule"
+    id = db.Column(db.Integer, primary_key=True)
+    training_week_id = db.Column(
+        db.Integer, db.ForeignKey("training_week.id"), nullable=False
+    )
+    training_id = db.Column(db.Integer, db.ForeignKey("training.id"), nullable=False)
 
 
 class TrainingLap(db.Model):
@@ -73,12 +70,19 @@ class Training(db.Model):
     )
 
 
+class TrainingType(db.Model):
+    __tablename__ = "training_type"
+    id = db.Column(db.Integer, primary_key=True)
+    type_name = db.Column(db.String, nullable=False)
+
+
 class Athlete(db.Model):
     __tablename__ = "athlete"
     id = db.Column(db.Integer, primary_key=True)
     age = db.Column(db.Integer, nullable=False)
     gender = db.Column(db.String, nullable=False)
     weight = db.Column(db.Float, nullable=False)
+    vdot_value = db.Column(db.Integer, nullable=True)
 
 
 class PersonalBest(db.Model):
