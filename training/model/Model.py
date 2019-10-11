@@ -1,25 +1,5 @@
 from training import db
 
-"""
-class Session(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    training = [Training] # reference to training
-    data = [] # Data retrieved from Garmin
-
-
-class Schedule(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    weeknumner = []
-    start_date = []
-    end_data = []
-    training = [] # list of trainings, None means off
-
-
-class TrainingPlan(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    trainings = []
-"""
-
 
 class Vdot(db.Model):
     __tablename__ = "vdot_values"
@@ -38,13 +18,6 @@ class VdotTempo(db.Model):
     distance_in_meter = db.Column(db.Integer, nullable=True)
 
 
-class TrainingType(db.Model):
-    __tablename__ = "training_type"
-    id = db.Column(db.Integer, primary_key=True)
-    # "alternating", "increasing", "steady"
-    type_name = db.Column(db.String, nullable=False)
-
-
 class Tempo(db.Model):
     __tablename__ = "tempo"
     id = db.Column(db.Integer, primary_key=True)
@@ -54,6 +27,22 @@ class Tempo(db.Model):
     upper_percentage_max_vdot = db.Column(db.Float, nullable=False)
     name = db.Column(db.String, nullable=False)
     description = db.Column(db.String, nullable=True)
+
+
+class TrainingWeek(db.Model):
+    __tablename__ = "training_week"
+    id = db.Column(db.Integer, primary_key=True)
+    start_date = db.Column(db.Date, nullable=False)
+    athlete_id = db.Column(db.Integer, db.ForeignKey("athlete.id"), nullable=False)
+
+
+class TrainingWeekSchedule(db.Model):
+    __tablename__ = "training_week_schedule"
+    id = db.Column(db.Integer, primary_key=True)
+    training_week_id = db.Column(
+        db.Integer, db.ForeignKey("training_week.id"), nullable=False
+    )
+    training_id = db.Column(db.Integer, db.ForeignKey("training.id"), nullable=False)
 
 
 class TrainingLap(db.Model):
@@ -79,6 +68,12 @@ class Training(db.Model):
     training_type_id = db.Column(
         db.Integer, db.ForeignKey("training_type.id"), nullable=False
     )
+
+
+class TrainingType(db.Model):
+    __tablename__ = "training_type"
+    id = db.Column(db.Integer, primary_key=True)
+    type_name = db.Column(db.String, nullable=False)
 
 
 class Athlete(db.Model):
