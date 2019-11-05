@@ -11,6 +11,7 @@ A schedule of trainings is based on a bigger training plan which is based on mor
 """
 
 import training
+from flask import Flask
 
 app = training.create_app()
 

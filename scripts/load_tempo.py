@@ -1,6 +1,6 @@
 # TODO: replace with alembic data migration step
 import requests
-import time
+import datetime
 
 import logging
 
@@ -72,9 +72,19 @@ traininglaps = [
     {"training_id": 1, "lap": 1, "tempo": 1, "distance_in_meter": 10000}
 ]
 
+trainingweek = [
+    {"start_date": "2019-10-01", "athlete_id": "1"}
+]
+
+trainingweekschedule = [
+    {"week_day": 0, "training_week_id": 1, "training_id": 1}
+]
+
 if __name__ == "__main__":
     send_data("tempo", tempos)
     send_data("trainingtype", trainingtypes)
     send_data("training", trainings)
     send_data("traininglap", traininglaps)
+    send_data("trainingweek", trainingweek)
+    send_data("trainingweekschedule", trainingweekschedule)
 

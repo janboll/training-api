@@ -52,6 +52,7 @@ def load_tempo():
             vdot = line[0]
             items.append(_create_tempo(vdot, 1, _load_pace_in_min(line[1])))
             items.append(_create_tempo(vdot, 2, _load_pace_in_min(line[2])))
+            #TODO: add other tempos
             send_data("vdot_tempo", items)
 
 

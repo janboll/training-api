@@ -1,13 +1,15 @@
 from flask import Flask
 from training.extensions import db, ma
 
+import os
+
 app = Flask(__name__)
 
 
 def create_app():
-
-    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:////tmp/test.db"
-    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
+    app.config.from_object("training.default_settings")
+    if "API_CONFIG_FILE" in os.environ:
+        app.config.from_envvar("API_CONFIG_FILE")
     db.init_app(app)
     ma.init_app(app)
 

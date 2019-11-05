@@ -2,9 +2,11 @@ from training.schema import (
     TrainingSchema,
     TrainingLapSchema,
     TrainingTypeSchema,
+TrainingWeekScheduleSchema,
+TrainingWeekSchema,
     TempoSchema,
 )
-from training.model.Model import Training, TrainingLap, TrainingType, Tempo
+from training.model.Model import Training, TrainingLap, TrainingType, TrainingWeekSchedule, TrainingWeek, Tempo
 from training.views.generic import ApiGeneric, register_api
 
 from flask import Blueprint, request
@@ -41,7 +43,19 @@ class ApiTempo(ApiGeneric):
         super().__init__(TempoSchema, Tempo)
 
 
+class ApiTrainingWeek(ApiGeneric):
+    def __init__(self):
+        super().__init__(TrainingWeekSchema, TrainingWeek)
+
+
+class ApiTrainingWeekSchedule(ApiGeneric):
+    def __init__(self):
+        super().__init__(TrainingWeekScheduleSchema, TrainingWeekSchedule)
+
+
 register_api(bp_training, ApiTraining, "/api/training")
 register_api(bp_training, ApiTrainingLap, "/api/traininglap")
 register_api(bp_training, ApiTrainingType, "/api/trainingtype")
 register_api(bp_training, ApiTempo, "/api/tempo")
+register_api(bp_training, ApiTrainingWeek, "/api/trainingweek")
+register_api(bp_training, ApiTrainingWeekSchedule, "/api/trainingweekschedule")

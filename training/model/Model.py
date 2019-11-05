@@ -39,10 +39,13 @@ class TrainingWeek(db.Model):
 class TrainingWeekSchedule(db.Model):
     __tablename__ = "training_week_schedule"
     id = db.Column(db.Integer, primary_key=True)
+    order_of_day = db.Column(db.Integer, nullable=True)
+    week_day = db.Column(db.Integer, nullable=False)
     training_week_id = db.Column(
         db.Integer, db.ForeignKey("training_week.id"), nullable=False
     )
     training_id = db.Column(db.Integer, db.ForeignKey("training.id"), nullable=False)
+    training_week = db.relationship("TrainingWeek", backref="schedules")
 
 
 class TrainingLap(db.Model):
@@ -58,11 +61,6 @@ class TrainingLap(db.Model):
 
 
 class Training(db.Model):
-    """
-        Intensity of training can be derived from the VDOT values of the tempo.
-            sum(tempo.vdot_percent)
-    """
-
     __tablename__ = "training"
     id = db.Column(db.Integer, primary_key=True)
     training_type_id = db.Column(
